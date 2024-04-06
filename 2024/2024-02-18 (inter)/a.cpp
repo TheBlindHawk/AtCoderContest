@@ -3,28 +3,32 @@
 #include <algorithm>
 using namespace std;
 
-int main() {
-    int H, W, N;
-    cin >> H >> W >> N;
-    
-    vector<int> A(N);
-    for (int i = 0; i < N; i++) {
-        cin >> A[i];
-    }
-    
-    vector<pair<int, int>> G;
-    for (int i = 0; i < N; i++) {
-        int value = A[i];
-        int count = 0;
-        for (int j = 0; j < N; j++) {
-            if (A[j] == value) {
-                count++;
-            }
+long long TotalArea ( long long a[], long long r, long long n ) {
+    long long area = 0;
+    for (int i = 0; i < n; i++) {
+        if (a[i] >= r) {
+            area += ( 1LL << a[i] ) * ( 1LL << a[i] );
         }
-        G.push_back(make_pair(value, count));
     }
+    return area;
+}
 
-    // code here
-    
+int main ( void ) {
+    long long h, w, n, a[1001];
+    cin >> h >> w >> n;
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    for (int r = 0; r <= 25; r++) {
+        long long lh = h / ( 1LL << r );
+        long long lw = w / ( 1LL << r );
+        long long la = lh * lw * ( 1LL << r ) * ( 1LL << r );//laまでしか作れない
+        long long aa = TotalArea ( a, r, n );//実際に必要になる面積
+        if (aa > la) {
+            cout << "No" << endl;
+            return 0;
+        }
+    }
+    cout << "Yes" << endl;
+
     return 0;
 }
